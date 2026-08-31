@@ -28,8 +28,7 @@ exports.login = async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.json({ message: 'Connexion réussie', token });
-  } catch (err) {
+res.json({ message: 'Connexion réussie', token, mustChangePassword: admin.must_change_password });  } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
   }
@@ -61,6 +60,102 @@ exports.getStats = async (req, res) => {
       parPays: parPays.rows,
     });
   } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+const STATUTS_VALIDES_ADMIN = ['Sympathisant', 'Militant', 'Leader Local'];
+
+exports.ajouterInscription = async (req, res) => {
+  const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;
+
+  if (!nom || !prenoms || !pays || !ville || !telephone || !email || !statut) {
+    return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
+  }
+
+  if (!consentement) {
+    return res.status(400).json({ error: 'Le consentement est obligatoire.' });
+  }
+
+  if (!STATUTS_VALIDES_ADMIN.includes(statut)) {
+    return res.status(400).json({ error: 'Statut invalide.' });
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO inscriptions (nom, prenoms, pays, ville, telephone, email, statut, consentement)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING id, nom, prenoms, email, statut, created_at`,
+      [nom, prenoms, pays, ville, telephone, email, statut, consentement]
+    );
+
+    res.status(201).json({
+      message: 'Inscription ajoutée !',
+      inscription: result.rows[0],
+    });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Cet email est déjà enregistré.' });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+exports.changerMotDePasse = async (req, res) => {
+  const { nouveauMotDePasse } = req.body;
+
+  if (!nouveauMotDePasse || nouveauMotDePasse.length < 8) {
+    return res.status(400).json({ error: 'Le nouveau mot de passe doit contenir au moins 8 caractères.' });
+  }
+
+  try {
+    const hash = await bcrypt.hash(nouveauMotDePasse, 10);
+    await pool.query(
+      'UPDATE admins SET password_hash = $1, must_change_password = false WHERE id = $2',
+      [hash, req.admin.id]
+    );
+    res.json({ message: 'Mot de passe mis à jour avec succès.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+exports.modifierCompte = async (req, res) => {
+  const { motDePasseActuel, nouvelEmail, nouveauMotDePasse } = req.body;
+
+  if (!motDePasseActuel) {
+    return res.status(400).json({ error: 'Le mot de passe actuel est requis.' });
+  }
+  if (!nouvelEmail && !nouveauMotDePasse) {
+    return res.status(400).json({ error: 'Indique un nouvel email ou un nouveau mot de passe.' });
+  }
+
+  try {
+    const result = await pool.query('SELECT * FROM admins WHERE id = $1', [req.admin.id]);
+    const admin = result.rows[0];
+
+    const motDePasseValide = await bcrypt.compare(motDePasseActuel, admin.password_hash);
+    if (!motDePasseValide) {
+      return res.status(401).json({ error: 'Mot de passe actuel incorrect.' });
+    }
+
+    if (nouveauMotDePasse && nouveauMotDePasse.length < 8) {
+      return res.status(400).json({ error: 'Le nouveau mot de passe doit contenir au moins 8 caractères.' });
+    }
+
+    const nouvelEmailFinal = nouvelEmail || admin.email;
+    const nouveauHash = nouveauMotDePasse ? await bcrypt.hash(nouveauMotDePasse, 10) : admin.password_hash;
+
+    await pool.query(
+      'UPDATE admins SET email = $1, password_hash = $2 WHERE id = $3',
+      [nouvelEmailFinal, nouveauHash, req.admin.id]
+    );
+
+    res.json({ message: 'Compte mis à jour avec succès.', email: nouvelEmailFinal });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Cet email est déjà utilisé par un autre compte.' });
+    }
     console.error(err);
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
   }

@@ -5,6 +5,9 @@ const verifierAdmin = require('../middleware/auth.middleware');
 
 router.post('/login', adminController.login);
 router.get('/inscriptions', verifierAdmin, adminController.listerInscriptions);
+router.post('/inscriptions', verifierAdmin, adminController.ajouterInscription);
 router.get('/stats', verifierAdmin, adminController.getStats);
+router.put('/password', verifierAdmin, adminController.changerMotDePasse);
+router.put('/account', verifierAdmin, adminController.modifierCompte);
 
 module.exports = router;

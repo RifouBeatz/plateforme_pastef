@@ -27,8 +27,9 @@ function Login() {
         return
       }
 
-      localStorage.setItem('pastef_admin_token', data.token)
-      navigate('/admin/dashboard')
+     localStorage.setItem('pastef_admin_token', data.token)
+localStorage.setItem('pastef_must_change_password', String(data.mustChangePassword))
+navigate(data.mustChangePassword ? '/admin/change-password' : '/admin/dashboard')
     } catch (err) {
       setError('Impossible de contacter le serveur.')
       setLoading(false)

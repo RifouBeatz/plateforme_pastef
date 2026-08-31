@@ -5,10 +5,14 @@ function AdminLayout() {
   const [ready, setReady] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem('pastef_admin_token')
     if (!token) {
       navigate('/admin/login')
+      return
+    }
+    if (localStorage.getItem('pastef_must_change_password') === 'true') {
+      navigate('/admin/change-password')
       return
     }
     setReady(true)
@@ -16,6 +20,7 @@ function AdminLayout() {
 
   const handleLogout = () => {
     localStorage.removeItem('pastef_admin_token')
+    localStorage.removeItem('pastef_must_change_password')
     navigate('/admin/login')
   }
 
@@ -37,6 +42,7 @@ function AdminLayout() {
           <NavLink to="/admin/dashboard" end className={linkClass}>📊 Tableau de Bord</NavLink>
           <NavLink to="/admin/dashboard/inscriptions" className={linkClass}>👥 Enregistrements</NavLink>
           <NavLink to="/admin/dashboard/exports" className={linkClass}>📤 Exports</NavLink>
+          <NavLink to="/admin/dashboard/compte" className={linkClass}>👤 Mon Compte</NavLink>
         </nav>
 
         <div className="text-xs uppercase opacity-50 tracking-wide mb-3">Compte</div>

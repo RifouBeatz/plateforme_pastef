@@ -1,4 +1,12 @@
 import { useState } from 'react'
+//import logoPastef from '../assets/pastef-logo.png'
+import rallyPhoto from '../assets/rally.jpg'
+// 👇 Remplace ce texte par le tien — c'est le paragraphe affiché dans la nouvelle section
+const texteSection = (
+  <>
+    PASTEF - Les Patriotes, Section Pologne est une structure du parti PASTEF qui rassemble et accompagne les militantes, militants et sympathisants sénégalais établis dans sa juridiction : <strong>la République tchèque</strong>, <strong>la Slovaquie</strong>, <strong>la Roumanie</strong>, <strong>l’Ukraine</strong>, <strong>l’Estonie</strong>, <strong>la Lettonie</strong> et <strong>la Lituanie</strong>. Fidèle aux valeurs fondatrices du PASTEF, notamment la démocratie, le don de soi pour la Patrie, le panafricanisme, le travail, l’éthique et la fraternité, la Section Pologne entend contribuer, depuis l’étranger, à la dynamique collective portée par les Patriotes. Elle constitue un espace d’engagement, de mobilisation, d’information et de solidarité pour les Sénégalaises et Sénégalais de notre juridiction qui souhaitent participer à la vie du parti et contribuer à la construction d’un Sénégal souverain, juste et prospère. Ensemble, au service de la Patrie 🇸🇳
+  </>
+)
 
 const STATUTS = ['Sympathisant', 'Militant', 'Leader Local']
 
@@ -55,23 +63,65 @@ function Register() {
       <header className="sticky top-0 z-10 text-white shadow-md bg-gradient-to-r from-[#00A651] to-[#CE1126]">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-lg sm:text-xl">
-            <span className="text-2xl">🇸🇳</span>
-            <span>PASTEF PATRIOTES</span>
-          </div>
-          <div className="hidden sm:block bg-white/20 rounded-full px-3 py-1 text-xs">
-            🟢 Plateforme Officielle
-          </div>
+  <span>PASTEF</span>
+</div>
+
+  <a href="https://pastef.org/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hidden sm:block bg-white/20 hover:bg-white/30 rounded-full px-3 py-1 text-xs transition">
+
+  🟢 Plateforme Officielle
+</a>
         </div>
       </header>
 
-      <div className="text-white text-center px-4 py-10 sm:py-14 bg-gradient-to-br from-[#00A651] to-[#CE1126]">
-        <h1 className="text-2xl sm:text-4xl font-bold mb-3 drop-shadow">PASTEF Pologne et Pays de Juridiction</h1>
+     <div className="text-white text-center px-4 py-10 sm:py-14 bg-gradient-to-br from-[#00A651] to-[#CE1126]">
+        <h1 className="text-2xl sm:text-4xl font-bold mb-3 drop-shadow">PASTEF SECTION POLOGNE & PAYS DE JURIDICTION</h1>
         <p className="text-sm sm:text-base max-w-xl mx-auto opacity-95 leading-relaxed">
-          Rejoignez notre mouvement patriotique où que vous soyez en Pologne et dans les pays de la juridiction.
+          Rejoignez notre mouvement patriotique  que vous résidiez en Pologne ou ses pays de juridiction.
         </p>
       </div>
+<div className="px-4 py-10 sm:py-16 bg-white">
+  <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-8 lg:gap-12 items-stretch">
+  <img
+    src={rallyPhoto}
+    alt="Meeting PASTEF"
+    className="w-full h-64 sm:h-80 lg:h-full object-cover rounded-lg shadow-lg"
+  />
+    <div>
+      <div className="flex items-center gap-3 mb-3">
+        <span className="w-8 h-0.5 bg-[#CE1126]"></span>
+        <span className="text-[#CE1126] font-bold text-sm tracking-wide uppercase">Notre Section</span>
+      </div>
+      <h2 className="text-2xl sm:text-3xl font-bold text-[#00A651] mb-4">
+        PASTEF Pologne et Pays de Juridiction
+      </h2>
+      <p className="text-gray-600 leading-relaxed mb-6">
+        {texteSection}
+      </p>
+      <div className="flex flex-wrap gap-3">
+        
+         <a href="https://pastef.org/articles-et-discours/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-[#CE1126] hover:bg-[#a80e1f] text-white font-semibold px-5 py-3 rounded-md transition"
+        >
+          → Actualités PASTEF
+        </a>
+        
+         <a href="#adhesion"
+          className="inline-flex items-center gap-2 bg-[#00A651] hover:bg-[#008c44] text-white font-semibold px-5 py-3 rounded-md transition"
+        >
+          → S'inscrire
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <main className="flex-1 flex justify-center px-4 -mt-6 sm:-mt-8 pb-10">
+
+      <main id="adhesion" className="flex-1 flex justify-center px-4 -mt-6 sm:-mt-8 pb-10">
         <div className="w-full max-w-md bg-white rounded-xl shadow-xl border-t-4 border-[#00A651] p-6 sm:p-8">
           <h2 className="text-xl font-bold mb-1 text-[#00A651]">Adhésion</h2>
           <p className="text-sm text-gray-500 mb-5">Enregistrez-vous en tant que militant ou sympathisant</p>
@@ -151,9 +201,7 @@ function Register() {
         <p className="text-sm mt-1 opacity-90">Section Pologne et Pays de Juridiction</p>
         <p className="text-xs mt-6 opacity-70">© 2026 - PASTEF Patriotes. Tous droits réservés.</p>
         <div className="flex justify-center gap-3 mt-4">
-          <div className="w-8 h-8 rounded flex items-center justify-center text-[8px] font-bold bg-[#00A651]">VERT</div>
-          <div className="w-8 h-8 rounded flex items-center justify-center text-[8px] font-bold bg-white border-2 border-gray-300 text-gray-700">BLANC</div>
-          <div className="w-8 h-8 rounded flex items-center justify-center text-[8px] font-bold bg-[#CE1126]">ROUGE</div>
+          
         </div>
       </footer>
     </div>
