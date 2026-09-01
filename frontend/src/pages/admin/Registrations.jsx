@@ -24,7 +24,7 @@ function Registrations() {
 
   const chargerInscriptions = () => {
     setLoading(true)
-    fetch('http://localhost:5001/api/admin/inscriptions', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/inscriptions`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -49,7 +49,7 @@ function Registrations() {
     setSubmitting(true)
 
     try {
-      const res = await fetch('http://localhost:5001/api/admin/inscriptions', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inscriptions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

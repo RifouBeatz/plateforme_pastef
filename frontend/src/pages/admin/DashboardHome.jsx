@@ -32,7 +32,7 @@ function DashboardHome() {
 
   useEffect(() => {
     const token = localStorage.getItem('pastef_admin_token')
-    fetch('http://localhost:5001/api/admin/stats', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/stats`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

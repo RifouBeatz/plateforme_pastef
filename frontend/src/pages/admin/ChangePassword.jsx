@@ -24,7 +24,7 @@ function ChangePassword() {
     setLoading(true)
     try {
       const token = localStorage.getItem('pastef_admin_token')
-      const res = await fetch('http://localhost:5001/api/admin/password', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function ChangePassword() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#00A651] to-[#CE1126] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#00A651] to-[#CE1126] px-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 sm:p-10">
         <h1 className="text-xl font-bold text-[#00A651] mb-2">Choisis ton mot de passe</h1>
         <p className="text-sm text-gray-500 mb-6">
@@ -87,7 +87,7 @@ function ChangePassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full text-white font-bold py-3.5 rounded-md bg-gradient-to-r from-[#00A651] to-[#00C86B] transition disabled:opacity-50"
+            className="w-full text-white font-bold py-3.5 rounded-md bg-linear-to-r from-[#00A651] to-[#00C86B] transition disabled:opacity-50"
           >
             {loading ? 'Enregistrement...' : 'Valider'}
           </button>

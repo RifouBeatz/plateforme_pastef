@@ -14,7 +14,7 @@ function Login() {
     setLoading(true)
 
     try {
-      const res = await fetch('http://localhost:5001/api/admin/login', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -37,7 +37,7 @@ navigate(data.mustChangePassword ? '/admin/change-password' : '/admin/dashboard'
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#00A651] to-[#CE1126] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#00A651] to-[#CE1126] px-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-8 sm:p-12">
         <div className="text-center mb-8">
           <div className="text-5xl mb-3">🇸🇳</div>

@@ -9,7 +9,7 @@ function Exports() {
     setError('')
     try {
       const token = localStorage.getItem('pastef_admin_token')
-      const res = await fetch('http://localhost:5001/api/admin/inscriptions', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inscriptions`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       const data = await res.json()

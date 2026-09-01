@@ -37,7 +37,7 @@ function Register() {
     setMessage('')
 
     try {
-      const res = await fetch('http://localhost:5001/api/inscription', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/inscription`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -60,7 +60,7 @@ function Register() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <header className="sticky top-0 z-10 text-white shadow-md bg-gradient-to-r from-[#00A651] to-[#CE1126]">
+      <header className="sticky top-0 z-10 text-white shadow-md bg-linear-to-r from-[#00A651] to-[#CE1126]">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-lg sm:text-xl">
   <span>PASTEF</span>
@@ -76,7 +76,7 @@ function Register() {
         </div>
       </header>
 
-     <div className="text-white text-center px-4 py-10 sm:py-14 bg-gradient-to-br from-[#00A651] to-[#CE1126]">
+     <div className="text-white text-center px-4 py-10 sm:py-14 bg-linear-to-br from-[#00A651] to-[#CE1126]">
         <h1 className="text-2xl sm:text-4xl font-bold mb-3 drop-shadow">PASTEF SECTION POLOGNE & PAYS DE JURIDICTION</h1>
         <p className="text-sm sm:text-base max-w-xl mx-auto opacity-95 leading-relaxed">
           Rejoignez notre mouvement patriotique  que vous résidiez en Pologne ou ses pays de juridiction.
@@ -175,7 +175,7 @@ function Register() {
                   checked={form.consentement}
                   onChange={handleChange}
                   required
-                  className="mt-0.5 w-4 h-4 flex-shrink-0 accent-[#00A651]"
+                  className="mt-0.5 w-4 h-4 shrink-0 accent-[#00A651]"
                 />
                 <span>J'accepte de recevoir des mises à jour de PASTEF Patriotes</span>
               </label>

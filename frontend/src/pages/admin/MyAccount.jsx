@@ -26,7 +26,7 @@ function MyAccount() {
     setLoading(true)
     try {
       const token = localStorage.getItem('pastef_admin_token')
-      const res = await fetch('http://localhost:5001/api/admin/account', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/account`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
