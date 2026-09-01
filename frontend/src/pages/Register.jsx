@@ -8,7 +8,7 @@ const texteSection = (
   </>
 )
 
-const STATUTS = ['Sympathisant', 'Militant', 'Leader Local']
+const STATUTS = ['Sympathisant', 'Militant']
 
 const initialForm = {
   nom: '',

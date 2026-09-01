@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const STATUTS = ['Sympathisant', 'Militant', 'Leader Local']
+const STATUTS = ['Sympathisant', 'Militant']
 
 const formVide = {
   nom: '', prenoms: '', pays: '', ville: '', telephone: '', email: '', statut: '', consentement: false,
