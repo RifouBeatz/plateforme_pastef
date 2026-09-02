@@ -4,11 +4,12 @@ import rallyPhoto from '../assets/rally.jpg'
 // 👇 Remplace ce texte par le tien — c'est le paragraphe affiché dans la nouvelle section
 const texteSection = (
   <>
-    PASTEF - Les Patriotes, Section Pologne est une structure du parti PASTEF qui rassemble et accompagne les militantes, militants et sympathisants sénégalais établis dans sa juridiction : <strong>la République tchèque</strong>, <strong>la Slovaquie</strong>, <strong>la Roumanie</strong>, <strong>l’Ukraine</strong>, <strong>l’Estonie</strong>, <strong>la Lettonie</strong> et <strong>la Lituanie</strong>. Fidèle aux valeurs fondatrices du PASTEF, notamment la démocratie, le don de soi pour la Patrie, le panafricanisme, le travail, l’éthique et la fraternité, la Section Pologne entend contribuer, depuis l’étranger, à la dynamique collective portée par les Patriotes. Elle constitue un espace d’engagement, de mobilisation, d’information et de solidarité pour les Sénégalaises et Sénégalais de notre juridiction qui souhaitent participer à la vie du parti et contribuer à la construction d’un Sénégal souverain, juste et prospère. Ensemble, au service de la Patrie 🇸🇳
+    PASTEF - Les Patriotes, Section Pologne est une structure du parti PASTEF qui rassemble et accompagne les militantes, militants et sympathisants sénégalais établis dans sa juridiction : <strong>la Pologne</strong>, <strong>la République tchèque</strong>, <strong>la Slovaquie</strong>, <strong>la Roumanie</strong>, <strong>l’Ukraine</strong>, <strong>l’Estonie</strong>, <strong>la Lettonie</strong> et <strong>la Lituanie</strong>. Fidèle aux valeurs fondatrices du PASTEF, notamment la démocratie, le don de soi pour la Patrie, le panafricanisme, le travail, l’éthique et la fraternité, la Section Pologne entend contribuer, depuis l’étranger, à la dynamique collective portée par les Patriotes. Elle constitue un espace d’engagement, de mobilisation, d’information et de solidarité pour les Sénégalaises et Sénégalais de notre juridiction qui souhaitent participer à la vie du parti et contribuer à la construction d’un Sénégal souverain, juste et prospère. Ensemble, au service de la Patrie 🇸🇳
   </>
 )
 
 const STATUTS = ['Sympathisant', 'Militant']
+const PAYS = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
 
 const initialForm = {
   nom: '',
@@ -113,7 +114,7 @@ function Register() {
          <a href="#adhesion"
           className="inline-flex items-center gap-2 bg-[#00A651] hover:bg-[#008c44] text-white font-semibold px-5 py-3 rounded-md transition"
         >
-          → S'inscrire
+          → Adhérer 
         </a>
       </div>
     </div>
@@ -143,7 +144,23 @@ function Register() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Ville" name="ville" value={form.ville} onChange={handleChange} />
-                <Field label="Pays" name="pays" value={form.pays} onChange={handleChange} />
+                <label className="block">
+  <span className="block text-sm font-semibold text-gray-700 mb-1">
+    Pays <span className="text-[#CE1126]">*</span>
+  </span>
+  <select
+    name="pays"
+    value={form.pays}
+    onChange={handleChange}
+    required
+    className="w-full border-2 border-gray-200 rounded-md px-3 py-3 text-base focus:outline-none focus:border-[#00A651] focus:ring-2 focus:ring-[#00A651]/20"
+  >
+    <option value="">-- Sélectionner --</option>
+    {PAYS.map((p) => (
+      <option key={p} value={p}>{p}</option>
+    ))}
+  </select>
+</label>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Email" name="email" type="email" value={form.email} onChange={handleChange} />

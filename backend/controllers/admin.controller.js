@@ -65,6 +65,7 @@ exports.getStats = async (req, res) => {
   }
 };
 const STATUTS_VALIDES_ADMIN = ['Sympathisant', 'Militant', 'Leader Local'];
+const PAYS_VALIDES_ADMIN = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie'];
 
 exports.ajouterInscription = async (req, res) => {
   const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;
@@ -79,6 +80,10 @@ exports.ajouterInscription = async (req, res) => {
 
   if (!STATUTS_VALIDES_ADMIN.includes(statut)) {
     return res.status(400).json({ error: 'Statut invalide.' });
+  }
+
+  if (!PAYS_VALIDES_ADMIN.includes(pays)) {
+    return res.status(400).json({ error: 'Pays invalide.' });
   }
 
   try {

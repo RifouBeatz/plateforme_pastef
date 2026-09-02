@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 const STATUTS = ['Sympathisant', 'Militant']
+const PAYS = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
 
 const formVide = {
   nom: '', prenoms: '', pays: '', ville: '', telephone: '', email: '', statut: '', consentement: false,
@@ -168,7 +169,21 @@ function Registrations() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Ville" name="ville" value={form.ville} onChange={handleFormChange} />
-                <ChampModal label="Pays" name="pays" value={form.pays} onChange={handleFormChange} />
+                <label className="block">
+  <span className="block text-xs font-semibold text-gray-700 mb-1">Pays</span>
+  <select
+    name="pays"
+    value={form.pays}
+    onChange={handleFormChange}
+    required
+    className="w-full border-2 border-gray-200 rounded-md px-2.5 py-2 text-sm focus:outline-none focus:border-[#00A651]"
+  >
+    <option value="">-- Sélectionner --</option>
+    {PAYS.map((p) => (
+      <option key={p} value={p}>{p}</option>
+    ))}
+  </select>
+</label>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Téléphone" name="telephone" type="tel" value={form.telephone} onChange={handleFormChange} />
