@@ -194,7 +194,7 @@ function Register() {
                   required
                   className="mt-0.5 w-4 h-4 shrink-0 accent-[#00A651]"
                 />
-                <span>J'accepte de recevoir des mises à jour de PASTEF Patriotes</span>
+                <span>J’accepte d’être contacté par un membre de la section </span>
               </label>
 
               {status === 'error' && (

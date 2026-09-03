@@ -10,9 +10,12 @@ const formVide = {
 function Registrations() {
   const [inscriptions, setInscriptions] = useState([])
   const [search, setSearch] = useState('')
+  const [filtreStatut, setFiltreStatut] = useState('')
+  const [filtrePays, setFiltrePays] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [editingId, setEditingId] = useState(null)
   const [form, setForm] = useState(formVide)
   const [formError, setFormError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -44,14 +47,42 @@ function Registrations() {
     setForm({ ...form, [name]: type === 'checkbox' ? checked : value })
   }
 
-  const handleAjouter = async (e) => {
+  const ouvrirAjout = () => {
+    setEditingId(null)
+    setForm(formVide)
+    setFormError('')
+    setShowModal(true)
+  }
+
+  const ouvrirModification = (i) => {
+    setEditingId(i.id)
+    setForm({
+      nom: i.nom,
+      prenoms: i.prenoms,
+      pays: i.pays,
+      ville: i.ville,
+      telephone: i.telephone,
+      email: i.email,
+      statut: i.statut,
+      consentement: true,
+    })
+    setFormError('')
+    setShowModal(true)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setFormError('')
     setSubmitting(true)
 
+    const url = editingId
+      ? `${import.meta.env.VITE_API_URL}/api/admin/inscriptions/${editingId}`
+      : `${import.meta.env.VITE_API_URL}/api/admin/inscriptions`
+    const method = editingId ? 'PUT' : 'POST'
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inscriptions`, {
-        method: 'POST',
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -67,6 +98,7 @@ function Registrations() {
       }
 
       setShowModal(false)
+      setEditingId(null)
       setForm(formVide)
       setSubmitting(false)
       chargerInscriptions()
@@ -76,14 +108,35 @@ function Registrations() {
     }
   }
 
+  const handleDelete = async (i) => {
+    const confirme = window.confirm(`Supprimer définitivement ${i.nom} ${i.prenoms} ? Cette action est irréversible.`)
+    if (!confirme) return
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/inscriptions/${i.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (!res.ok) {
+        alert('Impossible de supprimer cette inscription.')
+        return
+      }
+      chargerInscriptions()
+    } catch (err) {
+      alert('Impossible de contacter le serveur.')
+    }
+  }
+
   const filtered = inscriptions.filter((i) => {
     const q = search.toLowerCase()
-    return (
+    const matchSearch =
       i.nom.toLowerCase().includes(q) ||
       i.prenoms.toLowerCase().includes(q) ||
       i.pays.toLowerCase().includes(q) ||
       i.ville.toLowerCase().includes(q)
-    )
+    const matchStatut = !filtreStatut || i.statut === filtreStatut
+    const matchPays = !filtrePays || i.pays === filtrePays
+    return matchSearch && matchStatut && matchPays
   })
 
   return (
@@ -91,7 +144,7 @@ function Registrations() {
       <div className="bg-white rounded-lg shadow px-6 py-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h2 className="text-xl font-bold text-[#00A651]">Enregistrements</h2>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={ouvrirAjout}
           className="bg-[#00A651] hover:bg-[#008c44] text-white text-sm font-semibold px-4 py-2 rounded-md transition"
         >
           + Ajouter manuellement
@@ -99,15 +152,42 @@ function Registrations() {
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <h3 className="font-semibold text-gray-700">📋 Liste des Enregistrements</h3>
+        <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center gap-3">
           <input
             type="text"
             placeholder="Rechercher..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-64 focus:outline-none focus:border-[#00A651]"
+            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-56 focus:outline-none focus:border-[#00A651]"
           />
+          <select
+            value={filtreStatut}
+            onChange={(e) => setFiltreStatut(e.target.value)}
+            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-44 focus:outline-none focus:border-[#00A651]"
+          >
+            <option value="">Tous les statuts</option>
+            {STATUTS.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+          <select
+            value={filtrePays}
+            onChange={(e) => setFiltrePays(e.target.value)}
+            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-48 focus:outline-none focus:border-[#00A651]"
+          >
+            <option value="">Tous les pays</option>
+            {PAYS.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+          {(filtreStatut || filtrePays || search) && (
+            <button
+              onClick={() => { setSearch(''); setFiltreStatut(''); setFiltrePays('') }}
+              className="text-sm text-gray-500 underline"
+            >
+              Réinitialiser
+            </button>
+          )}
         </div>
 
         {loading && <p className="text-gray-500 p-5">Chargement...</p>}
@@ -125,6 +205,7 @@ function Registrations() {
                   <th className="px-4 py-2 whitespace-nowrap">Statut</th>
                   <th className="px-4 py-2 whitespace-nowrap">Téléphone</th>
                   <th className="px-4 py-2 whitespace-nowrap">Date</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,6 +224,20 @@ function Registrations() {
                     <td className="px-4 py-2 whitespace-nowrap">
                       {new Date(i.created_at).toLocaleDateString('fr-FR')}
                     </td>
+                    <td className="px-4 py-2 whitespace-nowrap">
+                      <button
+                        onClick={() => ouvrirModification(i)}
+                        className="text-[#00A651] font-semibold mr-3"
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        onClick={() => handleDelete(i)}
+                        className="text-[#CE1126] font-semibold"
+                      >
+                        Supprimer
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -158,11 +253,13 @@ function Registrations() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center px-4 z-50">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-[#00A651]">Ajouter un enregistrement</h3>
+              <h3 className="text-lg font-bold text-[#00A651]">
+                {editingId ? "Modifier l'enregistrement" : 'Ajouter un enregistrement'}
+              </h3>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
             </div>
 
-            <form onSubmit={handleAjouter} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Nom" name="nom" value={form.nom} onChange={handleFormChange} />
                 <ChampModal label="Prénom(s)" name="prenoms" value={form.prenoms} onChange={handleFormChange} />
@@ -170,20 +267,20 @@ function Registrations() {
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Ville" name="ville" value={form.ville} onChange={handleFormChange} />
                 <label className="block">
-  <span className="block text-xs font-semibold text-gray-700 mb-1">Pays</span>
-  <select
-    name="pays"
-    value={form.pays}
-    onChange={handleFormChange}
-    required
-    className="w-full border-2 border-gray-200 rounded-md px-2.5 py-2 text-sm focus:outline-none focus:border-[#00A651]"
-  >
-    <option value="">-- Sélectionner --</option>
-    {PAYS.map((p) => (
-      <option key={p} value={p}>{p}</option>
-    ))}
-  </select>
-</label>
+                  <span className="block text-xs font-semibold text-gray-700 mb-1">Pays</span>
+                  <select
+                    name="pays"
+                    value={form.pays}
+                    onChange={handleFormChange}
+                    required
+                    className="w-full border-2 border-gray-200 rounded-md px-2.5 py-2 text-sm focus:outline-none focus:border-[#00A651]"
+                  >
+                    <option value="">-- Sélectionner --</option>
+                    {PAYS.map((p) => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Téléphone" name="telephone" type="tel" value={form.telephone} onChange={handleFormChange} />
@@ -204,17 +301,19 @@ function Registrations() {
                 </select>
               </label>
 
-              <label className="flex items-start gap-2 text-xs text-gray-600">
-                <input
-                  type="checkbox"
-                  name="consentement"
-                  checked={form.consentement}
-                  onChange={handleFormChange}
-                  required
-                  className="mt-0.5 w-4 h-4 accent-[#00A651]"
-                />
-                <span>Cette personne a donné son accord pour être enregistrée</span>
-              </label>
+              {!editingId && (
+                <label className="flex items-start gap-2 text-xs text-gray-600">
+                  <input
+                    type="checkbox"
+                    name="consentement"
+                    checked={form.consentement}
+                    onChange={handleFormChange}
+                    required
+                    className="mt-0.5 w-4 h-4 accent-[#00A651]"
+                  />
+                  <span>Cette personne a donné son accord pour être enregistrée</span>
+                </label>
+              )}
 
               {formError && <p className="text-sm text-[#CE1126]">{formError}</p>}
 
@@ -223,7 +322,7 @@ function Registrations() {
                 disabled={submitting}
                 className="w-full bg-[#00A651] hover:bg-[#008c44] text-white font-semibold py-2.5 rounded-md text-sm transition disabled:opacity-50"
               >
-                {submitting ? 'Ajout en cours...' : 'Ajouter'}
+                {submitting ? 'Enregistrement...' : editingId ? 'Enregistrer les modifications' : 'Ajouter'}
               </button>
             </form>
           </div>

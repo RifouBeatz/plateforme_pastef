@@ -165,3 +165,51 @@ exports.modifierCompte = async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
   }
 };
+exports.modifierInscription = async (req, res) => {
+  const { id } = req.params;
+  const { nom, prenoms, pays, ville, telephone, email, statut } = req.body;
+
+  if (!nom || !prenoms || !pays || !ville || !telephone || !email || !statut) {
+    return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
+  }
+  if (!STATUTS_VALIDES_ADMIN.includes(statut)) {
+    return res.status(400).json({ error: 'Statut invalide.' });
+  }
+  if (!PAYS_VALIDES_ADMIN.includes(pays)) {
+    return res.status(400).json({ error: 'Pays invalide.' });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE inscriptions SET nom=$1, prenoms=$2, pays=$3, ville=$4, telephone=$5, email=$6, statut=$7
+       WHERE id=$8 RETURNING id, nom, prenoms, email, statut, created_at`,
+      [nom, prenoms, pays, ville, telephone, email, statut, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Inscription introuvable.' });
+    }
+
+    res.json({ message: 'Inscription modifiée !', inscription: result.rows[0] });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Cet email est déjà utilisé par une autre inscription.' });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+
+exports.supprimerInscription = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM inscriptions WHERE id = $1 RETURNING id', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Inscription introuvable.' });
+    }
+    res.json({ message: 'Inscription supprimée.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
