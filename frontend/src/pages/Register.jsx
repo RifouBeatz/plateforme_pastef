@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import logoPastef from '../assets/pastef-logo.png'
+import logoPastef from '../assets/pastef-logo-section.png'
 import rallyPhoto from '../assets/rally.jpg'
 // 👇 Remplace ce texte par le tien — c'est le paragraphe affiché dans la nouvelle section
 const texteSection = (
