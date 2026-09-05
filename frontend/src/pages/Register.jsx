@@ -1,15 +1,15 @@
 import { useState } from 'react'
-//import logoPastef from '../assets/pastef-logo.png'
+import logoPastef from '../assets/pastef-logo.png'
 import rallyPhoto from '../assets/rally.jpg'
 // 👇 Remplace ce texte par le tien — c'est le paragraphe affiché dans la nouvelle section
 const texteSection = (
   <>
-    PASTEF - Les Patriotes, Section Pologne est une structure du parti PASTEF qui rassemble et accompagne les militantes, militants et sympathisants sénégalais établis dans sa juridiction : <strong>la Pologne</strong>, <strong>la République tchèque</strong>, <strong>la Slovaquie</strong>, <strong>la Roumanie</strong>, <strong>l’Ukraine</strong>, <strong>l’Estonie</strong>, <strong>la Lettonie</strong> et <strong>la Lituanie</strong>. Fidèle aux valeurs fondatrices du PASTEF, notamment la démocratie, le don de soi pour la Patrie, le panafricanisme, le travail, l’éthique et la fraternité, la Section Pologne entend contribuer, depuis l’étranger, à la dynamique collective portée par les Patriotes. Elle constitue un espace d’engagement, de mobilisation, d’information et de solidarité pour les Sénégalaises et Sénégalais de notre juridiction qui souhaitent participer à la vie du parti et contribuer à la construction d’un Sénégal souverain, juste et prospère. Ensemble, au service de la Patrie 🇸🇳
+    PASTEF - Les Patriotes, Section Pologne est une structure du parti PASTEF qui rassemble et accompagne les militantes, militants et sympathisants sénégalais établis dans sa juridiction : <strong>la Pologne</strong>, <strong>la République Tchèque</strong>, <strong>la Slovaquie</strong>, <strong>la Roumanie</strong>, <strong>l’Ukraine</strong>, <strong>l’Estonie</strong>, <strong>la Lettonie</strong> et <strong>la Lituanie</strong>. Fidèle aux valeurs fondatrices du PASTEF, notamment la démocratie, le don de soi pour la Patrie, le panafricanisme, le travail, l’éthique et la fraternité, la Section Pologne entend contribuer, depuis l’étranger, à la dynamique collective portée par les Patriotes. Elle constitue un espace d’engagement, de mobilisation, d’information et de solidarité pour les Sénégalaises et Sénégalais de notre juridiction qui souhaitent participer à la vie du parti et contribuer à la construction d’un Sénégal souverain, juste et prospère. Ensemble, au service de la Patrie 🇸🇳
   </>
 )
 
 const STATUTS = ['Sympathisant', 'Militant']
-const PAYS = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
+const PAYS = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
 
 const initialForm = {
   nom: '',
@@ -63,9 +63,13 @@ function Register() {
     <div className="min-h-screen bg-white flex flex-col">
       <header className="sticky top-0 z-10 text-white shadow-md bg-linear-to-r from-[#00A651] to-[#CE1126]">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-lg sm:text-xl">
-  <span>PASTEF</span>
-</div>
+          <div className="flex items-center">
+            <img
+              src={logoPastef}
+              alt="PASTEF Les Patriotes - Section Pologne"
+              className="h-12 sm:h-16 w-auto max-w-[280px] object-contain"
+            />
+          </div>
 
   <a href="https://pastef.org/"
   target="_blank"
@@ -80,7 +84,7 @@ function Register() {
      <div className="text-white text-center px-4 py-10 sm:py-14 bg-linear-to-br from-[#00A651] to-[#CE1126]">
         <h1 className="text-2xl sm:text-4xl font-bold mb-3 drop-shadow">PASTEF SECTION POLOGNE & PAYS DE JURIDICTION</h1>
         <p className="text-sm sm:text-base max-w-xl mx-auto opacity-95 leading-relaxed">
-          Rejoignez notre mouvement patriotique  que vous résidiez en Pologne ou ses pays de juridiction.
+          Rejoignez notre mouvement patriotique  que vous résidiez en Pologne ou en République Tchèque, Slovaquie, Roumanie, Ukraine, Estonie, Lettonie ou Lituanie.
         </p>
       </div>
 <div className="px-4 py-10 sm:py-16 bg-white">

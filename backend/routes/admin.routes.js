@@ -4,6 +4,8 @@ const adminController = require('../controllers/admin.controller');
 const verifierAdmin = require('../middleware/auth.middleware');
 
 router.post('/login', adminController.login);
+router.post('/forgot-password', adminController.motDePasseOublie);
+router.post('/reset-password', adminController.reinitialiserMotDePasse);
 router.get('/inscriptions', verifierAdmin, adminController.listerInscriptions);
 router.post('/inscriptions', verifierAdmin, adminController.ajouterInscription);
 router.put('/inscriptions/:id', verifierAdmin, adminController.modifierInscription);

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -78,6 +78,9 @@ navigate(data.mustChangePassword ? '/admin/change-password' : '/admin/dashboard'
           >
             {loading ? 'Connexion...' : '🔐 Connexion'}
           </button>
+          <Link to="/admin/forgot-password" className="block text-center mt-4 text-sm text-gray-500 underline">
+  Mot de passe oublié ?
+</Link>
         </form>
       </div>
     </div>

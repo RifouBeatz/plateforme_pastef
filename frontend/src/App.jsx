@@ -1,11 +1,13 @@
-import Exports from './pages/admin/Exports'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Register from './pages/Register'
 import Login from './pages/admin/Login'
+import ForgotPassword from './pages/admin/ForgotPassword'
+import ResetPassword from './pages/admin/ResetPassword'
+import ChangePassword from './pages/admin/ChangePassword'
 import AdminLayout from './pages/admin/AdminLayout'
 import DashboardHome from './pages/admin/DashboardHome'
 import Registrations from './pages/admin/Registrations'
-import ChangePassword from './pages/admin/ChangePassword'
+import Exports from './pages/admin/Exports'
 import MyAccount from './pages/admin/MyAccount'
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/reset-password" element={<ResetPassword />} />
         <Route path="/admin/change-password" element={<ChangePassword />} />
         <Route path="/admin/dashboard" element={<AdminLayout />}>
           <Route index element={<DashboardHome />} />

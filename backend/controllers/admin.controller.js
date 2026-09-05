@@ -1,6 +1,8 @@
 const pool = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const envoyerEmail = require('../utils/email');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -208,6 +210,79 @@ exports.supprimerInscription = async (req, res) => {
       return res.status(404).json({ error: 'Inscription introuvable.' });
     }
     res.json({ message: 'Inscription supprimée.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+exports.motDePasseOublie = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email requis.' });
+  }
+
+  try {
+    const result = await pool.query('SELECT * FROM admins WHERE email = $1', [email]);
+    const admin = result.rows[0];
+
+    if (admin) {
+      const token = crypto.randomBytes(32).toString('hex');
+      const expiration = new Date(Date.now() + 60 * 60 * 1000);
+
+      await pool.query(
+        'UPDATE admins SET reset_token = $1, reset_token_expires = $2 WHERE id = $3',
+        [token, expiration, admin.id]
+      );
+
+      const lien = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
+
+      await envoyerEmail({
+        to: admin.email,
+        subject: 'Réinitialisation de ton mot de passe - PASTEF Pologne',
+        html: `
+          <p>Tu as demandé à réinitialiser ton mot de passe.</p>
+          <p><a href="${lien}">Clique ici pour choisir un nouveau mot de passe</a></p>
+          <p>Ce lien expire dans 1 heure. Si tu n'es pas à l'origine de cette demande, ignore cet email.</p>
+        `,
+      });
+    }
+
+    res.json({ message: "Si ce compte existe, un email de réinitialisation vient d'être envoyé." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+
+exports.reinitialiserMotDePasse = async (req, res) => {
+  const { token, nouveauMotDePasse } = req.body;
+
+  if (!token || !nouveauMotDePasse) {
+    return res.status(400).json({ error: 'Requête invalide.' });
+  }
+  if (nouveauMotDePasse.length < 8) {
+    return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères.' });
+  }
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM admins WHERE reset_token = $1 AND reset_token_expires > NOW()',
+      [token]
+    );
+    const admin = result.rows[0];
+
+    if (!admin) {
+      return res.status(400).json({ error: 'Lien invalide ou expiré. Refais une demande.' });
+    }
+
+    const hash = await bcrypt.hash(nouveauMotDePasse, 10);
+    await pool.query(
+      'UPDATE admins SET password_hash = $1, reset_token = NULL, reset_token_expires = NULL, must_change_password = false WHERE id = $2',
+      [hash, admin.id]
+    );
+
+    res.json({ message: 'Mot de passe réinitialisé avec succès.' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
