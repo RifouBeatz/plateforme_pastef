@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 const STATUTS_VALIDES = ['Sympathisant', 'Militant', 'Leader Local'];
-const PAYS_VALIDES = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie'];
+const PAYS_VALIDES = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie'];
 
 exports.inscrire = async (req, res) => {
   const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;

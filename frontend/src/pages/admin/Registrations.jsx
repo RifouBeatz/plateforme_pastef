@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 const STATUTS = ['Sympathisant', 'Militant']
-const PAYS = ['Pologne', 'République tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
+const PAYS = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie']
 
 const formVide = {
   nom: '', prenoms: '', pays: '', ville: '', telephone: '', email: '', statut: '', consentement: false,
