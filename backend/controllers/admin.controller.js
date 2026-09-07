@@ -81,7 +81,7 @@ const PAYS_VALIDES_ADMIN = ['Pologne', 'République Tchèque', 'Slovaquie', 'Rou
 exports.ajouterInscription = async (req, res) => {
   const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;
 
-  if (!nom || !prenoms || !pays || !ville || !telephone || !email || !statut) {
+  if (!nom || !prenoms || !pays || !ville || !telephone || !statut) {
     return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
   }
 
@@ -102,7 +102,7 @@ exports.ajouterInscription = async (req, res) => {
       `INSERT INTO inscriptions (nom, prenoms, pays, ville, telephone, email, statut, consentement)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING id, nom, prenoms, email, statut, created_at`,
-      [nom, prenoms, pays, ville, telephone, email, statut, consentement]
+      [nom, prenoms, pays, ville, telephone, email || null, statut, consentement]
     );
 
     res.status(201).json({
@@ -180,7 +180,7 @@ exports.modifierInscription = async (req, res) => {
   const { id } = req.params;
   const { nom, prenoms, pays, ville, telephone, email, statut } = req.body;
 
-  if (!nom || !prenoms || !pays || !ville || !telephone || !email || !statut) {
+  if (!nom || !prenoms || !pays || !ville || !telephone || !statut) {
     return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
   }
   if (!STATUTS_VALIDES_ADMIN.includes(statut)) {
@@ -194,7 +194,7 @@ exports.modifierInscription = async (req, res) => {
     const result = await pool.query(
       `UPDATE inscriptions SET nom=$1, prenoms=$2, pays=$3, ville=$4, telephone=$5, email=$6, statut=$7
        WHERE id=$8 RETURNING id, nom, prenoms, email, statut, created_at`,
-      [nom, prenoms, pays, ville, telephone, email, statut, id]
+      [nom, prenoms, pays, ville, telephone, email || null, statut, id]
     );
 
     if (result.rows.length === 0) {

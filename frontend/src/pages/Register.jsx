@@ -167,7 +167,7 @@ function Register() {
 </label>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Email" name="email" type="email" value={form.email} onChange={handleChange} />
+                <Field label="Email (optionnel)" name="email" type="email" value={form.email} onChange={handleChange} required={false} />
                 <Field label="Téléphone" name="telephone" type="tel" value={form.telephone} onChange={handleChange} />
               </div>
 
@@ -229,18 +229,18 @@ function Register() {
   )
 }
 
-function Field({ label, name, value, onChange, type = 'text' }) {
+function Field({ label, name, value, onChange, type = 'text', required = true }) {
   return (
     <label className="block">
       <span className="block text-sm font-semibold text-gray-700 mb-1">
-        {label} <span className="text-[#CE1126]">*</span>
+        {label} {required && <span className="text-[#CE1126]">*</span>}
       </span>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
-        required
+        required={required}
         className="w-full border-2 border-gray-200 rounded-md px-3 py-3 text-base focus:outline-none focus:border-[#00A651] focus:ring-2 focus:ring-[#00A651]/20"
       />
     </label>

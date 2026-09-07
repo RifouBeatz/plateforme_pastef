@@ -284,7 +284,7 @@ function Registrations() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <ChampModal label="Téléphone" name="telephone" type="tel" value={form.telephone} onChange={handleFormChange} />
-                <ChampModal label="Email" name="email" type="email" value={form.email} onChange={handleFormChange} />
+                <ChampModal label="Email (optionnel)" name="email" type="email" value={form.email} onChange={handleFormChange} required={false} />
               </div>
 
               <label className="block">
@@ -332,7 +332,7 @@ function Registrations() {
   )
 }
 
-function ChampModal({ label, name, value, onChange, type = 'text' }) {
+function ChampModal({ label, name, value, onChange, type = 'text', required = true }) {
   return (
     <label className="block">
       <span className="block text-xs font-semibold text-gray-700 mb-1">{label}</span>
@@ -341,7 +341,7 @@ function ChampModal({ label, name, value, onChange, type = 'text' }) {
         name={name}
         value={value}
         onChange={onChange}
-        required
+        required={required}
         className="w-full border-2 border-gray-200 rounded-md px-2.5 py-2 text-sm focus:outline-none focus:border-[#00A651]"
       />
     </label>

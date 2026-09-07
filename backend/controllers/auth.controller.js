@@ -6,7 +6,7 @@ const PAYS_VALIDES = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie'
 exports.inscrire = async (req, res) => {
   const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;
 
-  if (!nom || !prenoms || !pays || !ville || !telephone || !email || !statut) {
+  if (!nom || !prenoms || !pays || !ville || !telephone || !statut) {
     return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
   }
 
@@ -27,7 +27,7 @@ exports.inscrire = async (req, res) => {
       `INSERT INTO inscriptions (nom, prenoms, pays, ville, telephone, email, statut, consentement)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING id, nom, prenoms, email, statut, created_at`,
-      [nom, prenoms, pays, ville, telephone, email, statut, consentement]
+      [nom, prenoms, pays, ville, telephone, email || null, statut, consentement]
     );
 
     res.status(201).json({
