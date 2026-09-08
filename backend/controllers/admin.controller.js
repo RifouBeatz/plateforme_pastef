@@ -24,21 +24,17 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Identifiants incorrects.' });
     }
 
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiration = new Date(Date.now() + 10 * 60 * 1000);
-
-    await pool.query(
-      'UPDATE admins SET two_factor_code = $1, two_factor_expires = $2 WHERE id = $3',
-      [code, expiration, admin.id]
+    const token = jwt.sign(
+      { id: admin.id, email: admin.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
     );
 
-    await envoyerEmail({
-      to: admin.email,
-      subject: 'Ton code de connexion - PASTEF Pologne',
-      html: `<p>Ton code de connexion est : <strong style="font-size: 24px;">${code}</strong></p><p>Ce code expire dans 10 minutes.</p>`,
+    res.json({
+      message: 'Connexion réussie',
+      token,
+      mustChangePassword: admin.must_change_password,
     });
-
-    res.json({ message: 'Code envoyé par email.', requiresTwoFactor: true, email: admin.email });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
@@ -292,41 +288,6 @@ exports.reinitialiserMotDePasse = async (req, res) => {
     );
 
     res.json({ message: 'Mot de passe réinitialisé avec succès.' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
-  }
-};
-exports.verifierCode = async (req, res) => {
-  const { email, code } = req.body;
-
-  if (!email || !code) {
-    return res.status(400).json({ error: 'Email et code requis.' });
-  }
-
-  try {
-    const result = await pool.query(
-      'SELECT * FROM admins WHERE email = $1 AND two_factor_code = $2 AND two_factor_expires > NOW()',
-      [email, code]
-    );
-    const admin = result.rows[0];
-
-    if (!admin) {
-      return res.status(401).json({ error: 'Code invalide ou expiré.' });
-    }
-
-    await pool.query(
-      'UPDATE admins SET two_factor_code = NULL, two_factor_expires = NULL WHERE id = $1',
-      [admin.id]
-    );
-
-    const token = jwt.sign(
-      { id: admin.id, email: admin.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
-    res.json({ message: 'Connexion réussie', token, mustChangePassword: admin.must_change_password });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
