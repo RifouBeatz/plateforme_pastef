@@ -68,10 +68,11 @@ function Register() {
   return (
     <div className="public-page min-h-screen overflow-hidden bg-[#f6f4ef] text-[#10261b]">
       <header className="site-header sticky top-0 z-20 border-b border-white/20 bg-[#071d13]/90 text-white backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-5 px-5 py-3 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-5 sm:px-8 sm:py-3">
           <a href="#accueil" className="shrink-0" aria-label="Retour à l'accueil">
-            <img src={logoPastef} alt="PASTEF Les Patriotes - Section Pologne" className="h-12 w-auto max-w-[210px] object-contain sm:h-14 sm:max-w-[250px]" />
+            <img src={logoPastef} alt="PASTEF Les Patriotes - Section Pologne" className="h-10 w-auto max-w-[175px] object-contain sm:h-14 sm:max-w-[250px]" />
           </a>
+          <a href="#adhesion" className="rounded-full bg-[#d8eeae] px-3.5 py-2 text-xs font-extrabold text-[#10261b] md:hidden">Adhérer</a>
           <nav className="hidden items-center gap-7 text-sm font-semibold text-white/75 md:flex" aria-label="Navigation principale">
             <a className="transition hover:text-white" href="#section">Notre section</a>
             <a className="transition hover:text-white" href="#adhesion">Adhérer</a>
@@ -81,7 +82,7 @@ function Register() {
       </header>
 
       <main id="accueil">
-        <section className="hero-panel relative isolate flex min-h-[620px] items-end overflow-hidden bg-[#092016] text-white sm:min-h-[680px]">
+        <section className="hero-panel relative isolate flex min-h-[560px] items-end overflow-hidden bg-[#092016] text-white sm:min-h-[620px] lg:min-h-[680px]">
           {HERO_IMAGES.map((image, index) => (
             <img
               key={image}
@@ -92,16 +93,16 @@ function Register() {
           ))}
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(4,24,15,.94)_0%,rgba(4,24,15,.68)_42%,rgba(4,24,15,.18)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(4,24,15,.9)_0%,transparent_55%)]" />
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 pb-16 pt-20 sm:px-8 lg:grid-cols-[1.15fr_.85fr] lg:items-end lg:pb-24">
+          <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 pb-14 pt-16 sm:gap-12 sm:px-8 sm:pb-16 sm:pt-20 lg:grid-cols-[1.15fr_.85fr] lg:items-end lg:pb-24">
             <div className="hero-copy max-w-3xl">
-              <div className="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.28em] text-[#d8eeae]"><span className="h-px w-10 bg-[#d8eeae]" />Section Pologne &amp; pays de juridiction</div>
+              <div className="mb-5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.2em] text-[#d8eeae] sm:mb-6 sm:text-xs sm:tracking-[.28em]"><span className="h-px w-8 bg-[#d8eeae] sm:w-10" />Section Pologne &amp; pays de juridiction</div>
               <h1 className="max-w-3xl text-4xl font-black leading-[.98] tracking-tight sm:text-6xl lg:text-7xl">Une énergie patriotique qui traverse les frontières.</h1>
-              <p className="mt-7 max-w-xl text-base leading-7 text-white/80 sm:text-lg">Rejoignez les Sénégalaises et Sénégalais engagés en Pologne et pays de juridiction. Ensemble, faisons vivre une communauté utile, solidaire et tournée vers l’avenir.</p>
-              <div className="mt-9 flex flex-wrap items-center gap-4"><a href="#adhesion" className="inline-flex items-center gap-3 rounded-full bg-[#d8eeae] px-6 py-3.5 text-sm font-extrabold text-[#10261b] shadow-[0_10px_30px_rgba(0,0,0,.2)] transition hover:-translate-y-0.5 hover:bg-white">Rejoindre le mouvement <span aria-hidden="true">↓</span></a><a href="#section" className="text-sm font-semibold text-white/80 underline decoration-white/35 underline-offset-4 transition hover:text-white">Découvrir la section</a></div>
+              <p className="mt-5 max-w-xl text-sm leading-6 text-white/80 sm:mt-7 sm:text-lg sm:leading-7">Rejoignez les Sénégalaises et Sénégalais engagés en Pologne et pays de juridiction. Ensemble, faisons vivre une communauté utile, solidaire et tournée vers l’avenir.</p>
+              <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4"><a href="#adhesion" className="inline-flex items-center gap-3 rounded-full bg-[#d8eeae] px-5 py-3 text-sm font-extrabold text-[#10261b] shadow-[0_10px_30px_rgba(0,0,0,.2)] transition hover:-translate-y-0.5 hover:bg-white sm:px-6 sm:py-3.5">Rejoindre le mouvement <span aria-hidden="true">↓</span></a><a href="#section" className="text-sm font-semibold text-white/80 underline decoration-white/35 underline-offset-4 transition hover:text-white">Découvrir</a></div>
             </div>
             <div className="hidden justify-self-end lg:block"><div className="hero-note max-w-xs border-l border-white/40 pl-5 text-sm leading-6 text-white/75"><div className="mb-2 flex items-baseline gap-2 text-white"><span className="text-3xl font-black">08</span><span className="text-3xl font-black">pays</span></div>réunis autour d’une même vision, depuis l’Europe.</div></div>
           </div>
-          <div className="absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 gap-2" aria-label="Images du hero">
+          <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2 sm:bottom-7" aria-label="Images du hero">
             {HERO_IMAGES.map((image, index) => (
               <button
                 key={image}

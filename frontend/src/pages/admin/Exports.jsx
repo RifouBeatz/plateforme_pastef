@@ -38,19 +38,21 @@ function Exports() {
 
   return (
     <div>
-      <div className="bg-white rounded-lg shadow px-6 py-4 mb-6">
-        <h2 className="text-xl font-bold text-[#00A651]">Exports</h2>
+      <div className="admin-hero mb-6 px-6 py-7 text-white sm:px-8">
+        <p className="text-xs font-bold uppercase tracking-[.2em] text-[#d9efb8]">Données</p>
+        <h2 className="mt-2 text-3xl font-black tracking-tight">Exports</h2>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-[#00A651] font-semibold text-sm mb-4">📤 Exporter les Données</h3>
-        <p className="text-sm text-gray-500 mb-4">
+      <div className="admin-card max-w-2xl p-6 sm:p-8">
+        <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e6f2df] text-xl text-[#168449]">↗</div>
+        <h3 className="text-xl font-black text-[#173723]">Exporter les données</h3>
+        <p className="mb-6 mt-2 max-w-lg text-sm leading-6 text-[#6b7c70]">
           Télécharge la liste complète des enregistrements au format CSV, utilisable dans Excel ou Google Sheets.
         </p>
         <button
           onClick={telecharger}
           disabled={loading}
-          className="bg-[#00A651] hover:bg-[#008c44] text-white font-semibold px-5 py-2.5 rounded-md text-sm transition disabled:opacity-50"
+          className="rounded-full bg-[#168449] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#0f6e3c] disabled:opacity-50"
         >
           {loading ? 'Préparation...' : '👥 Enregistrements (CSV)'}
         </button>

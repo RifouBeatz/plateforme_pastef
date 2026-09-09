@@ -141,29 +141,29 @@ function Registrations() {
 
   return (
     <div>
-      <div className="bg-white rounded-lg shadow px-6 py-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h2 className="text-xl font-bold text-[#00A651]">Enregistrements</h2>
+      <div className="admin-hero mb-6 flex flex-col justify-between gap-4 px-6 py-7 text-white sm:flex-row sm:items-end sm:px-8">
+        <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[#d9efb8]">Base des membres</p><h2 className="mt-2 text-3xl font-black tracking-tight">Enregistrements</h2></div>
         <button
           onClick={ouvrirAjout}
-          className="bg-[#00A651] hover:bg-[#008c44] text-white text-sm font-semibold px-4 py-2 rounded-md transition"
+          className="rounded-full bg-[#d9efb8] px-5 py-3 text-sm font-bold text-[#123622] transition hover:bg-white"
         >
           + Ajouter manuellement
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div className="admin-card overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-[#e5ebe2] bg-[#fbfcfa] px-5 py-5 sm:flex-row sm:items-center">
           <input
             type="text"
             placeholder="Rechercher..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-56 focus:outline-none focus:border-[#00A651]"
+            className="form-control w-full border border-[#d6dfd6] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#168449] sm:w-56"
           />
           <select
             value={filtreStatut}
             onChange={(e) => setFiltreStatut(e.target.value)}
-            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-44 focus:outline-none focus:border-[#00A651]"
+            className="form-control w-full border border-[#d6dfd6] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#168449] sm:w-44"
           >
             <option value="">Tous les statuts</option>
             {STATUTS.map((s) => (
@@ -173,7 +173,7 @@ function Registrations() {
           <select
             value={filtrePays}
             onChange={(e) => setFiltrePays(e.target.value)}
-            className="border border-gray-200 rounded-md px-3 py-2 text-sm w-full sm:w-48 focus:outline-none focus:border-[#00A651]"
+            className="form-control w-full border border-[#d6dfd6] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#168449] sm:w-48"
           >
             <option value="">Tous les pays</option>
             {PAYS.map((p) => (
@@ -196,7 +196,7 @@ function Registrations() {
         {!loading && !error && (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-gray-500">
+              <thead className="bg-[#f2f6ef] text-left text-[11px] uppercase tracking-[.08em] text-[#718176]">
                 <tr>
                   <th className="px-4 py-2 whitespace-nowrap">#</th>
                   <th className="px-4 py-2 whitespace-nowrap">Nom &amp; Prénoms</th>
@@ -212,7 +212,7 @@ function Registrations() {
                 {filtered.map((i, idx) => (
                   <tr key={i.id} className="border-t border-gray-100 hover:bg-gray-50">
                     <td className="px-4 py-2 whitespace-nowrap text-gray-400">{idx + 1}</td>
-                    <td className="px-4 py-2 whitespace-nowrap font-medium text-gray-800">{i.nom} {i.prenoms}</td>
+                    <td className="px-4 py-3 whitespace-nowrap font-bold text-[#173723]">{i.nom} {i.prenoms}</td>
                     <td className="px-4 py-2 whitespace-nowrap">{i.ville}</td>
                     <td className="px-4 py-2 whitespace-nowrap">{i.pays}</td>
                     <td className="px-4 py-2 whitespace-nowrap">

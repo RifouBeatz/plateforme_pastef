@@ -60,11 +60,12 @@ function MyAccount() {
 
   return (
     <div>
-      <div className="bg-white rounded-lg shadow px-6 py-4 mb-6">
-        <h2 className="text-xl font-bold text-[#00A651]">Mon Compte</h2>
+      <div className="admin-hero mb-6 px-6 py-7 text-white sm:px-8">
+        <p className="text-xs font-bold uppercase tracking-[.2em] text-[#d9efb8]">Préférences</p>
+        <h2 className="mt-2 text-3xl font-black tracking-tight">Mon compte</h2>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6 max-w-md">
+      <div className="admin-card max-w-xl p-6 sm:p-8">
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
             <span className="block text-sm font-semibold text-gray-700 mb-1">Nouvel email (optionnel)</span>

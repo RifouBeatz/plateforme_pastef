@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 function BarChart({ title, data, colorClass = 'bg-gradient-to-r from-[#00A651] to-[#00C86B]' }) {
   const max = Math.max(...data.map((d) => d.total), 1)
   return (
-    <div className="bg-white rounded-lg shadow p-5">
-      <h3 className="text-[#00A651] font-semibold text-sm mb-4">{title}</h3>
+    <div className="admin-card p-5 sm:p-6">
+      <div className="mb-5 flex items-center justify-between"><h3 className="text-sm font-bold text-[#173723]">{title}</h3><span className="text-xs text-[#91a096]">Répartition</span></div>
       <div className="space-y-3">
         {data.map((d) => (
           <div key={d.label} className="flex items-center gap-3">
-            <div className="w-28 sm:w-36 text-xs text-gray-600 truncate">{d.label}</div>
-            <div className="flex-1 h-8 bg-gray-100 rounded overflow-hidden">
+            <div className="w-28 truncate text-xs font-semibold text-[#607166] sm:w-36">{d.label}</div>
+            <div className="h-8 flex-1 overflow-hidden rounded-lg bg-[#edf2eb]">
               <div
                 className={`h-full ${colorClass} flex items-center justify-end px-2 text-white text-xs font-bold`}
                 style={{ width: `${(d.total / max) * 100}%` }}
@@ -52,21 +52,21 @@ function DashboardHome() {
 
   return (
     <div>
-      <div className="bg-white rounded-lg shadow px-6 py-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <h2 className="text-xl font-bold text-[#00A651]">Tableau de Bord</h2>
-        <span className="text-sm text-gray-500">
+      <div className="admin-hero mb-6 flex flex-col justify-between gap-5 px-6 py-7 text-white sm:flex-row sm:items-end sm:px-8">
+        <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[#d9efb8]">Vue d’ensemble</p><h2 className="mt-2 text-3xl font-black tracking-tight">Tableau de bord</h2></div>
+        <span className="text-sm text-white/70">
           {new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-5 border-l-4 border-[#00A651]">
-          <div className="text-3xl font-bold text-[#00A651]">{stats.total}</div>
-          <div className="text-xs text-gray-500 mt-1">Total Enregistrements</div>
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="admin-card border-l-4 border-[#168449] p-5">
+          <div className="text-4xl font-black text-[#168449]">{stats.total}</div>
+          <div className="mt-1 text-xs font-bold uppercase tracking-[.12em] text-[#829187]">Total enregistrements</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-5 border-l-4 border-[#CE1126]">
-          <div className="text-3xl font-bold text-[#CE1126]">{stats.parPays.length}</div>
-          <div className="text-xs text-gray-500 mt-1">Pays Actifs</div>
+        <div className="admin-card border-l-4 border-[#ce1126] p-5">
+          <div className="text-4xl font-black text-[#ce1126]">{stats.parPays.length}</div>
+          <div className="mt-1 text-xs font-bold uppercase tracking-[.12em] text-[#829187]">Pays actifs</div>
         </div>
       </div>
 
