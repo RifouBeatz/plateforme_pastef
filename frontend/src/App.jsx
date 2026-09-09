@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Register from './pages/Register'
 import Login from './pages/admin/Login'
 import ForgotPassword from './pages/admin/ForgotPassword'
@@ -13,6 +14,7 @@ import MyAccount from './pages/admin/MyAccount'
 function App() {
   return (
     <BrowserRouter>
+      <PageTitle />
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/admin/login" element={<Login />} />
@@ -28,6 +30,18 @@ function App() {
       </Routes>
     </BrowserRouter>
   )
+}
+
+function PageTitle() {
+  const location = useLocation()
+
+  useEffect(() => {
+    document.title = location.pathname.startsWith('/admin')
+      ? 'PASTEF Section Pologne Admin'
+      : 'PASTEF Section Pologne'
+  }, [location.pathname])
+
+  return null
 }
 
 export default App
