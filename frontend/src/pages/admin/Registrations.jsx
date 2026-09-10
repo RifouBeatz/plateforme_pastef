@@ -227,15 +227,21 @@ function Registrations() {
                     <td className="px-4 py-2 whitespace-nowrap">
                       <button
                         onClick={() => ouvrirModification(i)}
-                        className="text-[#00A651] font-semibold mr-3"
+                        type="button"
+                        aria-label={`Modifier ${i.nom} ${i.prenoms}`}
+                        title="Modifier"
+                        className="mr-3 text-lg leading-none text-[#168449] transition hover:scale-110"
                       >
-                        Modifier
+                        ✏️
                       </button>
                       <button
                         onClick={() => handleDelete(i)}
-                        className="text-[#CE1126] font-semibold"
+                        type="button"
+                        aria-label={`Supprimer ${i.nom} ${i.prenoms}`}
+                        title="Supprimer"
+                        className="text-lg leading-none text-[#CE1126] transition hover:scale-110"
                       >
-                        Supprimer
+                        🗑️
                       </button>
                     </td>
                   </tr>
