@@ -40,6 +40,86 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
   }
 };
+
+exports.creerAdmin = async (req, res) => {
+  const email = req.body.email?.trim().toLowerCase();
+  const { motDePasse } = req.body;
+
+  if (!email || !motDePasse) {
+    return res.status(400).json({ error: 'Email et mot de passe requis.' });
+  }
+
+  if (motDePasse.length < 8) {
+    return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères.' });
+  }
+
+  try {
+    const hash = await bcrypt.hash(motDePasse, 10);
+    const result = await pool.query(
+      `INSERT INTO admins (email, password_hash, must_change_password)
+       VALUES ($1, $2, true)
+       RETURNING id, email, created_at`,
+      [email, hash]
+    );
+
+    res.status(201).json({
+      message: 'Compte admin créé avec succès.',
+      admin: result.rows[0],
+    });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Cet email admin est déjà utilisé.' });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Erreur serveur, réessaie plus tard.' });
+  }
+};
+
+exports.listerAdmins = async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, email, created_at FROM admins ORDER BY created_at ASC'
+    );
+    res.json({ admins: result.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Impossible de charger les comptes admin.' });
+  }
+};
+
+exports.supprimerAdmin = async (req, res) => {
+  const adminId = Number(req.params.id);
+
+  if (!Number.isInteger(adminId)) {
+    return res.status(400).json({ error: 'Identifiant admin invalide.' });
+  }
+
+  if (adminId === req.admin.id) {
+    return res.status(400).json({ error: 'Tu ne peux pas supprimer ton propre compte.' });
+  }
+
+  try {
+    const totalResult = await pool.query('SELECT COUNT(*) FROM admins');
+    if (Number(totalResult.rows[0].count) <= 1) {
+      return res.status(400).json({ error: 'Le dernier compte admin ne peut pas être supprimé.' });
+    }
+
+    const result = await pool.query(
+      'DELETE FROM admins WHERE id = $1 RETURNING id, email',
+      [adminId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Compte admin introuvable.' });
+    }
+
+    res.json({ message: 'Compte admin supprimé.', admin: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Impossible de supprimer ce compte admin.' });
+  }
+};
+
 exports.listerInscriptions = async (req, res) => {
   try {
     const result = await pool.query(
