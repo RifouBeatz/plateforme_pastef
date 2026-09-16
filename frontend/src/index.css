@@ -4,6 +4,26 @@ html {
   scroll-behavior: smooth;
 }
 
+.card-reveal {
+  animation: card-reveal 320ms ease-out both;
+}
+
+.card-option:focus-within {
+  outline: 3px solid rgba(22, 132, 73, .18);
+  outline-offset: 2px;
+}
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Avenir Next', 'Trebuchet MS', sans-serif;

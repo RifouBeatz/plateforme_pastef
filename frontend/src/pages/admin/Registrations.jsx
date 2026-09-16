@@ -5,6 +5,7 @@ const PAYS = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie', 'Ukrai
 
 const formVide = {
   nom: '', prenoms: '', pays: '', ville: '', telephone: '', email: '', statut: '', consentement: false,
+  aCarte: false, typeCarte: '', numeroCarte: '',
 }
 
 function Registrations() {
@@ -65,6 +66,9 @@ function Registrations() {
       email: i.email,
       statut: i.statut,
       consentement: true,
+      aCarte: i.a_carte,
+      typeCarte: i.type_carte || '',
+      numeroCarte: i.numero_carte || '',
     })
     setFormError('')
     setShowModal(true)
@@ -204,6 +208,7 @@ function Registrations() {
                   <th className="px-4 py-2 whitespace-nowrap">Pays</th>
                   <th className="px-4 py-2 whitespace-nowrap">Statut</th>
                   <th className="px-4 py-2 whitespace-nowrap">Téléphone</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Carte</th>
                   <th className="px-4 py-2 whitespace-nowrap">Date</th>
                   <th className="px-4 py-2 whitespace-nowrap">Actions</th>
                 </tr>
@@ -221,6 +226,9 @@ function Registrations() {
                       </span>
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap">{i.telephone}</td>
+                    <td className="px-4 py-2 whitespace-nowrap text-xs">
+                      {i.a_carte ? `${i.type_carte === 'virtuelle' ? 'Virtuelle' : 'Physique'}${i.numero_carte ? ` · ${i.numero_carte}` : ''}` : 'Aucune'}
+                    </td>
                     <td className="px-4 py-2 whitespace-nowrap">
                       {new Date(i.created_at).toLocaleDateString('fr-FR')}
                     </td>
@@ -292,6 +300,26 @@ function Registrations() {
                 <ChampModal label="Téléphone" name="telephone" type="tel" value={form.telephone} onChange={handleFormChange} />
                 <ChampModal label="Email (optionnel)" name="email" type="email" value={form.email} onChange={handleFormChange} required={false} />
               </div>
+
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <input type="checkbox" name="aCarte" checked={form.aCarte} onChange={handleFormChange} className="h-4 w-4 accent-[#168449]" />
+                Cette personne a sa carte
+              </label>
+              {form.aCarte && (
+                <div className="space-y-3 rounded-xl border border-[#dce9d4] bg-[#f7faf5] p-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className="block">
+                      <span className="block text-xs font-semibold text-gray-700 mb-1">Type de carte</span>
+                      <select name="typeCarte" value={form.typeCarte} onChange={handleFormChange} className="w-full border-2 border-gray-200 rounded-md px-2.5 py-2 text-sm">
+                        <option value="">-- Choisir --</option>
+                        <option value="virtuelle">Carte virtuelle</option>
+                        <option value="physique">Carte physique</option>
+                      </select>
+                    </label>
+                    {form.typeCarte && <ChampModal label="Numéro (optionnel)" name="numeroCarte" value={form.numeroCarte} onChange={handleFormChange} required={false} />}
+                  </div>
+                </div>
+              )}
 
               <label className="block">
                 <span className="block text-xs font-semibold text-gray-700 mb-1">Statut</span>

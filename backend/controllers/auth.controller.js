@@ -4,7 +4,7 @@ const STATUTS_VALIDES = ['Sympathisant', 'Militant', 'Leader Local'];
 const PAYS_VALIDES = ['Pologne', 'République Tchèque', 'Slovaquie', 'Roumanie', 'Ukraine', 'Estonie', 'Lettonie', 'Lituanie'];
 
 exports.inscrire = async (req, res) => {
-  const { nom, prenoms, pays, ville, telephone, email, statut, consentement } = req.body;
+  const { nom, prenoms, pays, ville, telephone, email, statut, consentement, aCarte, typeCarte, numeroCarte } = req.body;
 
   if (!nom || !prenoms || !pays || !ville || !telephone || !statut) {
     return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
@@ -24,10 +24,10 @@ exports.inscrire = async (req, res) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO inscriptions (nom, prenoms, pays, ville, telephone, email, statut, consentement)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING id, nom, prenoms, email, statut, created_at`,
-      [nom, prenoms, pays, ville, telephone, email || null, statut, consentement]
+      `INSERT INTO inscriptions (nom, prenoms, pays, ville, telephone, email, statut, consentement, a_carte, type_carte, numero_carte)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+       RETURNING id, nom, prenoms, email, statut, a_carte, type_carte, numero_carte, created_at`,
+      [nom, prenoms, pays, ville, telephone, email || null, statut, consentement, Boolean(aCarte), aCarte ? typeCarte || null : null, aCarte ? numeroCarte || null : null]
     );
 
     res.status(201).json({

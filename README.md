@@ -262,6 +262,15 @@ cd backend
 DATABASE_URL="URL_NEON_OU_POSTGRESQL" node scripts/makeEmailOptional.js
 ```
 
+Les informations de carte d’adhérent sont également facultatives. Pour ajouter les colonnes nécessaires dans une base existante, exécuter :
+
+```bash
+cd backend
+DATABASE_URL="URL_NEON_OU_POSTGRESQL" node scripts/addCardFields.js
+```
+
+La fonctionnalité ajoute `a_carte`, `type_carte` (`virtuelle` ou `physique`) et `numero_carte`. Le numéro n’est jamais obligatoire. Après sélection du type de carte, il est visible dans les enregistrements admin s’il a été renseigné.
+
 Pour créer un compte admin :
 
 ```bash
